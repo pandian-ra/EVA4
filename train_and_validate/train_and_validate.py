@@ -29,8 +29,11 @@ class train_and_validate():
 
         print('Finished Training')
         return model
-
+    
     def validate(testloader, device, model):
+        pred_wrong = []
+        true_wrong = []
+        image = []
         dataiter = iter(testloader)
         images, labels = dataiter.next()
         images, labels = images.to(device), labels.to(device)
@@ -45,7 +48,42 @@ class train_and_validate():
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-        print('Accuracy of the network on the 10000 test images: %2d %%' % ((100 * correct) / total))    
+                # print(predicted)
+                # print(labels)
+                preds = predicted.cpu().numpy()
+                target = labels.cpu().numpy()
+                preds = np.reshape(preds,(len(preds),1))
+                target = np.reshape(target,(len(preds),1))
+                for i in range(len(preds)):
+                    # pred.append(preds[i])
+                    # true.append(target[i])
+                    if(preds[i]!=target[i]):
+                        pred_wrong.append(preds[i])
+                        true_wrong.append(target[i])
+                        image.append(images[i])
+                # if(predicted != labels):
+                #     pred_wrong.append(predicted)
+                #     true_wrong.append(labels)
+                #     image.append(data[i])
+        print('Accuracy of the network on the 10000 test images: %2d %%' % ((100 * correct) / total))
+        return image,true_wrong,pred_wrong
+
+#     def validate(testloader, device, model):
+#         dataiter = iter(testloader)
+#         images, labels = dataiter.next()
+#         images, labels = images.to(device), labels.to(device)
+#         outputs = model(images)
+#         correct = 0
+#         total = 0
+#         with torch.no_grad():
+#             for data in testloader:
+#                 images, labels = data
+#                 images, labels = images.to(device), labels.to(device)
+#                 outputs = model(images)
+#                 _, predicted = torch.max(outputs.data, 1)
+#                 total += labels.size(0)
+#                 correct += (predicted == labels).sum().item()
+#         print('Accuracy of the network on the 10000 test images: %2d %%' % ((100 * correct) / total))    
 
   
     def classValidation(testloader, device, model, classes):
