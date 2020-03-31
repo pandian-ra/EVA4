@@ -37,7 +37,7 @@ class GradCamHelper():
         normed_torch_img = normalizer(torch_img)
         mask, _ = resnet_gradcam(normed_torch_img)
         heatmap, result = visualize_cam(mask, torch_img)
-        ax.imshow(transforms.ToPILImage()(heatmap), cmap='brg', interpolation='none')
+        ax.imshow(transforms.ToPILImage()(result), cmap='brg', interpolation='none')
 
         # ax.imshow(transforms.ToPILImage()(getGradCamImg(torchvision.utils.make_grid(image.cpu(), nrow=5).permute(1, 2, 0),resnet_gradcam)), cmap='brg', interpolation='none')
         ax.set_title(f)
