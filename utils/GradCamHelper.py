@@ -27,7 +27,7 @@ def unnormalize_to_numpy(img):
     npimg = img.numpy()
     return np.transpose(npimg, (1, 2, 0))
 
-def wrong_plot(true,ima,pred,encoder,inv_normalize,n_figures,resnet_gradcam,classes):
+def wrong_plot(true,ima,pred,n_figures,resnet_gradcam,classes):
     print('Classes in order Actual and Predicted')
     n_row = int(n_figures/5)
     fig,axes = plt.subplots(figsize=(15, 15), nrows = n_row, ncols=5)
@@ -42,7 +42,7 @@ def wrong_plot(true,ima,pred,encoder,inv_normalize,n_figures,resnet_gradcam,clas
         normed_torch_img = normalizer(torch_img)
         mask, _ = resnet_gradcam(normed_torch_img)
         heatmap, result = visualize_cam(mask, torch_img)    
-        ax.imshow(unnormalize_image(image.cpu()))
+        ax.imshow(unnormalize_to_numpy(image.cpu()))
         ax.imshow(transforms.ToPILImage()(result), alpha=0.3, cmap='jet')
         ax.set_title(f)
     plt.show()   
