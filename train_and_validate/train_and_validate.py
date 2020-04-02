@@ -71,8 +71,8 @@ def test(model, device, test_loader):
     model.eval()
     test_loss = 0
     correct = 0
-    test_losses = []
-    test_acc = []
+    test_losses = 0.0
+    test_acc = 0.0
     pred_wrong = []
     true_wrong = []
     image = []
@@ -96,13 +96,13 @@ def test(model, device, test_loader):
                     true_wrong.append(tar[i])
                     image.append(data[i])
     test_loss /= len(test_loader.dataset)
-    test_losses.append(test_loss)
+    test_losses = test_loss
 
     print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
-    test_acc.append(100. * correct / len(test_loader.dataset))
+    test_acc = 100. * correct / len(test_loader.dataset)
     
     return image,true_wrong,pred_wrong,test_acc,test_losses
 
@@ -113,6 +113,8 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA):
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3, verbose=True)  
     train_losses = []
     train_acc = []
+    test_losses = []
+    test_acc = []
     
     
     for epoch in range(EPOCH):
@@ -154,8 +156,10 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA):
         train_losses.append(loss.item())    
         train_acc.append(100*correct/processed)
         scheduler.step(100*correct/processed)
-        img,true_wrong,pred_wrong,test_acc,test_losses = test(model, device, test_loader)
-    return train_losses, train_acc, model
+        img,true_wrong,pred_wrong,tst_acc ,tst_loss = test(model, device, test_loader)
+        test_losses.append(tst_loss)
+        test_acc.append(tst_acc)
+    return train_losses, train_acc, model,img,true_wrong,pred_wrong,test_acc,test_losses
 
 
 def validate(testloader, device, model):
@@ -194,7 +198,7 @@ def validate(testloader, device, model):
             #     true_wrong.append(labels)
             #     image.append(data[i])
     print('Accuracy of the network on the 10000 test images: %2d %%' % ((100 * correct) / total))
-    return image,true_wrong,pred_wrong
+    return image,true_wrong,pred_wrong,
 
 #     def validate(testloader, device, model):
 #         dataiter = iter(testloader)
