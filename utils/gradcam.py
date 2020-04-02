@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 
-from utils import find_alexnet_layer, find_vgg_layer, find_resnet_layer, find_densenet_layer, find_squeezenet_layer
+from EVA4.utils.utils import find_alexnet_layer, find_vgg_layer, find_resnet_layer, find_densenet_layer, find_squeezenet_layer
 
 
 class GradCAM(object):
