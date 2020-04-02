@@ -114,13 +114,15 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA):
     train_losses = []
     train_acc = []
     
-    pbar = tqdm(train_loader)
+    
     for epoch in range(EPOCH):
         correct = 0
         processed = 0
+        pbar = tqdm(train_loader)
+        model.train()
         for batch_idx, (data, target) in enumerate(pbar):
             # get samples
-            model.train()
+            
             data, target = data.to(device), target.to(device)
             # Init
             optimizer.zero_grad()
@@ -136,7 +138,7 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA):
             classify_loss = criterion(y_pred,target)
             # loss = F.nll_loss(y_pred, target)
             loss = classify_loss + LAMDA * regularization_loss
-            train_losses.append(loss)
+            # train_losses.append(loss)
 
             # Backpropagation
             loss.backward()
@@ -147,12 +149,13 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA):
             correct += pred.eq(target.view_as(pred)).sum().item()
             processed += len(data)
             pbar.set_description(desc= f'Loss={loss.item()} Batch_id={batch_idx} Accuracy={100*correct/processed:0.2f}')
-            train_acc.append(100*correct/processed)
+            # train_acc.append(100*correct/processed)
 
+        train_losses.append(loss.item())    
+        train_acc.append(100*correct/processed)
         scheduler.step(100*correct/processed)
-    img,true_wrong,pred_wrong,test_acc,test_losses = test(model, device, test_loader)
-    return train_losses, train_acc, model,img,true_wrong,pred_wrong,test_acc,test_losses 
-
+        img,true_wrong,pred_wrong,test_acc,test_losses = test(model, device, test_loader)
+    return train_losses, train_acc, model
 
 
 def validate(testloader, device, model):
