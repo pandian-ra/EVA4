@@ -10,7 +10,7 @@ import random
 from torchvision import transforms
 import torch
 import torchvision
-from utils import visualize_cam, Normalize
+from EVA4.utils.utils import visualize_cam, Normalize
 
 
 def getGradCamImg(im,resnet_gradcam):
