@@ -4,6 +4,8 @@ import torch.optim as optim
 import torch
 import numpy as np
 from tqdm import tqdm
+from torch_lr_finder import LRFinder
+
 
     
     # def __new__(self):
