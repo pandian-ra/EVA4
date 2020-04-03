@@ -162,7 +162,7 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA, MOMENTUM, LEAR
         test_acc.append(tst_acc)
         
     lr_finder = LRFinder(model, optimizer, criterion, device)
-    lr_finder.range_test(trainloader, end_lr=100, num_iter=100)
+    lr_finder.range_test(train_loader, end_lr=100, num_iter=100)
     lr_finder.plot() # to inspect the loss-learning rate graph
     lr_finder.reset()    
     return train_losses, train_acc, model,img,true_wrong,pred_wrong,test_acc,test_losses
