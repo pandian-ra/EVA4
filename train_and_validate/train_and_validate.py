@@ -111,8 +111,8 @@ def test(model, device, test_loader):
 
 def train( model, device, train_loader,test_loader, EPOCH, LAMDA, MOMENTUM, LEARNING_RATE):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=3, verbose=True)  
+    optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM, nesterov=True)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=0, verbose=True)  
     train_losses = []
     train_acc = []
     test_losses = []
@@ -164,8 +164,8 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA, MOMENTUM, LEAR
     lr_finder = LRFinder(model, optimizer, criterion, device)
     lr_finder.range_test(train_loader, end_lr=100, num_iter=100)
     lr_finder.plot() # to inspect the loss-learning rate graph
-    lr_finder.reset()    
-    return train_losses, train_acc, model,img,true_wrong,pred_wrong,test_acc,test_losses
+#     lr_finder.reset()    
+    return train_losses, train_acc, model,img,true_wrong,pred_wrong,test_acc,test_losses, lr_finder
 
 
 def validate(testloader, device, model):
