@@ -12,7 +12,7 @@ from albumentations.pytorch import ToTensor
 class albumCompose:
     def __init__(self):
         self.albumentations_transform = Compose({
-            Cutout(max_h_size=12,max_w_size=12,num_holes=1,p=0.5),
+            Cutout(max_h_size=4,max_w_size=4,num_holes=2,p=0.5),
             HorizontalFlip(p=0.5),
             VerticalFlip(p=0.5),
             Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
