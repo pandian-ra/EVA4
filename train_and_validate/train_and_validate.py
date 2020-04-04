@@ -109,10 +109,10 @@ def test(model, device, test_loader):
     return image,true_wrong,pred_wrong,test_acc,test_losses
 
 
-def train( model, device, train_loader,test_loader, EPOCH, LAMDA, MOMENTUM, LEARNING_RATE):
+def train( model, device, train_loader,test_loader, EPOCH, FACTOR, PATIENCE, MOMENTUM, LEARNING_RATE):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM, nesterov=True)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=0, verbose=True)  
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=FACTOR, patience=PATIENCE, verbose=True)  
     train_losses = []
     train_acc = []
     test_losses = []
@@ -134,14 +134,14 @@ def train( model, device, train_loader,test_loader, EPOCH, LAMDA, MOMENTUM, LEAR
             # Predict
             y_pred = model(data)
             # Calculate loss
-            regularization_loss = 0
-            for param in model.parameters():
-                regularization_loss += torch.sum(abs(param))
+#             regularization_loss = 0
+#             for param in model.parameters():
+#                 regularization_loss += torch.sum(abs(param))
             
-            classify_loss = criterion(y_pred,target)
-            # loss = F.nll_loss(y_pred, target)
-            loss = classify_loss + LAMDA * regularization_loss
-            # train_losses.append(loss)
+#             classify_loss = criterion(y_pred,target)
+            loss = F.nll_loss(y_pred, target)
+            #loss = classify_loss + LAMDA * regularization_loss
+#             train_losses.append(loss)
 
             # Backpropagation
             loss.backward()
