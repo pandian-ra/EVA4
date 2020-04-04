@@ -16,7 +16,7 @@ class albumCompose:
             HorizontalFlip(p=0.5),
 #             VerticalFlip(p=0.5),
             Rotate((-30.0, 30.0)),
-            RGBShift=(30,30,30),
+            RGBShift(30,30,30),
             Normalize((0.49139968, 0.48215841, 0.44653091), (0.24703223, 0.24348513, 0.26158784))
         })
     def __call__(self, img):
