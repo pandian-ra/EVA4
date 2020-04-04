@@ -111,7 +111,7 @@ def test(model, device, test_loader):
 
 def train( model, device, train_loader,test_loader, EPOCH, FACTOR, PATIENCE, MOMENTUM, LEARNING_RATE):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM, nesterov=True)
+    optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM, nesterov=True, weight_decay= 0.0004)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=FACTOR, patience=PATIENCE, verbose=True)  
     train_losses = []
     train_acc = []
