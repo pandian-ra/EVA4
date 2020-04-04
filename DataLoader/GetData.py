@@ -7,15 +7,17 @@ import numpy as np
 import albumentations as A
 from torch.utils.data import DataLoader, Dataset
 from albumentations.pytorch import ToTensor
-from albumentations import Compose, RandomCrop, Normalize, HorizontalFlip, Cutout, VerticalFlip
+from albumentations import Compose, RandomCrop, Normalize, HorizontalFlip, Cutout, VerticalFlip, Rotate, RGBshift
 from albumentations.pytorch import ToTensor
 class albumCompose:
     def __init__(self):
         self.albumentations_transform = Compose({
             Cutout(max_h_size=4,max_w_size=4,num_holes=2,p=0.5),
             HorizontalFlip(p=0.5),
-            VerticalFlip(p=0.5),
-            Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+#             VerticalFlip(p=0.5),
+            Rotate((-30.0, 30.0)),
+            RGBshift=(30,30,30),
+            Normalize((0.49139968, 0.48215841, 0.44653091), (0.24703223, 0.24348513, 0.26158784))
         })
     def __call__(self, img):
         img = np.array(img)
@@ -26,7 +28,7 @@ class albumCompose:
 class albumCompose_test:
     def __init__(self):
         self.albumentations_transform = Compose({
-        Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        Normalize((0.49139968, 0.48215841, 0.44653091), (0.24703223, 0.24348513, 0.26158784))
         })
     def __call__(self, img):
         img = np.array(img)
