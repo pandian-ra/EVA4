@@ -7,7 +7,7 @@ import numpy as np
 import albumentations as A
 from torch.utils.data import DataLoader, Dataset
 from albumentations.pytorch import ToTensor
-from albumentations import Compose, RandomCrop, Normalize, HorizontalFlip, Cutout, VerticalFlip, Rotate, RGBshift
+from albumentations import Compose, RandomCrop, Normalize, HorizontalFlip, Cutout, VerticalFlip, Rotate, RGBShift
 from albumentations.pytorch import ToTensor
 class albumCompose:
     def __init__(self):
@@ -16,7 +16,7 @@ class albumCompose:
             HorizontalFlip(p=0.5),
 #             VerticalFlip(p=0.5),
             Rotate((-30.0, 30.0)),
-            RGBshift=(30,30,30),
+            RGBShift=(30,30,30),
             Normalize((0.49139968, 0.48215841, 0.44653091), (0.24703223, 0.24348513, 0.26158784))
         })
     def __call__(self, img):
